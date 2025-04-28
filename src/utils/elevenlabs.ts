@@ -49,7 +49,8 @@ export const generateSpeech = async (
     */
     
     // For demo purposes, return a sample audio with CORS-enabled sample
-    return "https://assets.mixkit.co/active_storage/sfx/212/212-preview.mp3";
+    // Using a different CORS-friendly audio sample that should work better
+    return "https://audio.jukehost.co.uk/KiJjZoCSoO9Uhw0JLWMW3LH3PlSOAzaI";
   } catch (error) {
     console.error("Error generating speech:", error);
     throw new Error("Failed to generate audio. Please try again.");
