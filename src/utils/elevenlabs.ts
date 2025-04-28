@@ -49,8 +49,8 @@ export const generateSpeech = async (
     */
     
     // For demo purposes, return a sample audio with CORS-enabled sample
-    // Using a different CORS-friendly audio sample that should work better
-    return "https://audio.jukehost.co.uk/KiJjZoCSoO9Uhw0JLWMW3LH3PlSOAzaI";
+    // Using a reliable mp3 sample that works across browsers
+    return "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
   } catch (error) {
     console.error("Error generating speech:", error);
     throw new Error("Failed to generate audio. Please try again.");

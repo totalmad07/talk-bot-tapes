@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Headphones, Play, Pause, Volume2, SkipBack, SkipForward, Loader2 } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
 
 interface AudioPlayerProps {
   audioUrl: string | null;
@@ -16,6 +17,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, isLoading, title })
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [audioError, setAudioError] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     // Reset player state when audio changes
@@ -23,6 +26,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, isLoading, title })
       setIsPlaying(false);
       setProgress(0);
       setCurrentTime(0);
+      setAudioError(false);
       
       if (audioRef.current) {
         audioRef.current.pause();
@@ -50,26 +54,56 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, isLoading, title })
       setIsPlaying(false);
     };
 
+    const handleError = () => {
+      console.error("Audio playback error");
+      setAudioError(true);
+      setIsPlaying(false);
+      toast({
+        variant: 'destructive',
+        title: "Audio Error",
+        description: "There was an error playing this audio file.",
+      });
+    };
+
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('loadedmetadata', handleLoadedMetadata);
     audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('error', handleError);
 
     return () => {
       audio.removeEventListener('timeupdate', handleTimeUpdate);
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
       audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('error', handleError);
     };
-  }, []);
+  }, [toast]);
 
   const togglePlayPause = () => {
     if (!audioRef.current) return;
     
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
+    try {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        const playPromise = audioRef.current.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.error("Play error:", error);
+            setAudioError(true);
+            toast({
+              variant: 'destructive',
+              title: "Playback Error",
+              description: "Unable to play this audio file. Please try regenerating the podcast.",
+            });
+          });
+        }
+      }
+      setIsPlaying(!isPlaying);
+    } catch (error) {
+      console.error("Toggle play/pause error:", error);
+      setAudioError(true);
     }
-    setIsPlaying(!isPlaying);
   };
 
   const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,6 +154,29 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioUrl, isLoading, title })
         </CardHeader>
         <CardContent className="flex items-center justify-center h-36">
           <p className="text-podcast-lightGray">Generate a podcast to listen</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (audioError) {
+    return (
+      <Card className="bg-podcast-gray border-none shadow-lg">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Headphones className="h-5 w-5 text-podcast-green" />
+            <span>AI Podcast</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center justify-center h-36 space-y-4">
+          <p className="text-podcast-lightGray">Audio playback error. Please try generating again.</p>
+          <Button 
+            variant="outline" 
+            onClick={() => setAudioError(false)}
+            className="bg-podcast-purple text-white hover:bg-podcast-purple/80"
+          >
+            Retry
+          </Button>
         </CardContent>
       </Card>
     );
