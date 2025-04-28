@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import PodcastForm from '@/components/PodcastForm';
 import ScriptDisplay from '@/components/ScriptDisplay';
 import AudioPlayer from '@/components/AudioPlayer';
-import { generateScript } from '@/utils/openai';
+import { generateScript } from '@/utils/gemini';
 import { generateSpeech } from '@/utils/elevenlabs';
 import { useToast } from '@/components/ui/use-toast';
 import { Headphones, Sparkles } from 'lucide-react';
@@ -18,7 +18,7 @@ const Index = () => {
 
   const handleGeneratePodcast = async (topic: string, voiceId: string) => {
     try {
-      // Step 1: Generate the script
+      // Step 1: Generate the script using Gemini
       setIsGeneratingScript(true);
       setTopicTitle(topic);
       setPodcastScript(null);

@@ -16,12 +16,12 @@ const ScriptDisplay: React.FC<ScriptDisplayProps> = ({ script, isLoading }) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5 text-podcast-blue" />
-            <span>Podcast Script</span>
+            <span>Podcast Script (Gemini)</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-[220px]">
           <div className="text-podcast-lightGray text-center animate-pulse">
-            Generating your podcast script...
+            Generating your podcast script with Gemini AI...
           </div>
         </CardContent>
       </Card>
@@ -34,12 +34,12 @@ const ScriptDisplay: React.FC<ScriptDisplayProps> = ({ script, isLoading }) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5 text-podcast-blue" />
-            <span>Podcast Script</span>
+            <span>Podcast Script (Gemini)</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center h-[220px]">
           <div className="text-podcast-lightGray text-center">
-            Your podcast script will appear here
+            Your Gemini-powered podcast script will appear here
           </div>
         </CardContent>
       </Card>
@@ -51,7 +51,7 @@ const ScriptDisplay: React.FC<ScriptDisplayProps> = ({ script, isLoading }) => {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <FileText className="h-5 w-5 text-podcast-blue" />
-          <span>Podcast Script</span>
+          <span>Podcast Script (Gemini)</span>
         </CardTitle>
       </CardHeader>
       <CardContent>

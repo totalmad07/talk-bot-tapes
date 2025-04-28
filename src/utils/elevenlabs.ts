@@ -48,8 +48,8 @@ export const generateSpeech = async (
     return audioUrl;
     */
     
-    // For demo purposes, return a sample audio
-    return "https://cdn.echosim.io/audio/samples/aifc-conversion-Amy.mp3";
+    // For demo purposes, return a sample audio with CORS-enabled sample
+    return "https://assets.mixkit.co/active_storage/sfx/212/212-preview.mp3";
   } catch (error) {
     console.error("Error generating speech:", error);
     throw new Error("Failed to generate audio. Please try again.");
